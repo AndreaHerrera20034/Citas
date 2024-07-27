@@ -2,23 +2,23 @@
 
 export default function Registro() {
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="flex bg-white rounded-lg shadow-xl overflow-hidden">
-        <div className="flex-shrink-0">
-          <img src="src\assets\nutriologo-transformed.jpeg" className="p-2 h-full w-96 object-scale-down rounded-3xl" alt="Nutrious DATE" />
+    <div className="flex items-center justify-center h-screen">
+      <div className="flex overflow-hidden">
+        <div className="w-8/12">
+          <img src="src\assets\nutriologo-transformed.jpeg" className="py-2 px-2 h-screen w-full rounded-3xl" alt="Nutrious DATE" />
         </div>
-        <div className="p-2">
-          <div className="mb-3">
-            <img src="src\assets\logo (1).png" className="h-16 w-auto mx-auto" alt="Nutrious date" />
+        <div className="p-8">
+          <div className="mb-1">
+            <img src="src\assets\logo.png" className="h-32 w-auto mx-auto" alt="Nutrious date" />
           </div>
-          <h2 className="text-2xl text-center font-bold text-gray-800 ">
+          <h2 className="text-5xl text-center font-bold text-gray-800 ">
             Crea una cuenta
           </h2>
-          <p className="text-gray-600 mb-3">
+          <p className="text-gray-600 text-2xl mb-3">
             Por favor escriba sus datos para registrarse.
           </p>
           <form>
-            <div className="mb-2">
+            <div className="mb-4">
               {/* Input de Nombre */}
               <div className="relative h-10 w-full min-w-[200px]">
                 <input
@@ -31,7 +31,7 @@ export default function Registro() {
               </div>
             </div>
 
-            <div className="mb-2">
+            <div className="mb-4">
               <div className="relative h-10 w-full min-w-[200px]">
                 <input
                   className="peer h-full w-full rounded-[7px] border border-blue-gray-200 bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-blue-500 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
@@ -43,7 +43,7 @@ export default function Registro() {
               </div>
             </div>
 
-            <div className="mb-3 relative">
+            <div className="mb-4 relative">
               <div className="relative h-10 w-full min-w-[200px]">
                 <input
                   className="peer h-full w-full rounded-[7px] border border-blue-gray-200 bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-blue-500 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
@@ -57,13 +57,13 @@ export default function Registro() {
 
             <button
               type="submit"
-              className="w-full bg-VerdeButton text-white px-4 py-2 rounded-md hover:bg-green-950 focus:outline-none focus:ring-2 focus:ring-green-900"
+              className="w-full bg-VerdeLink text-white text-lg px-4 py-2 rounded-md hover:bg-green-950 focus:outline-none focus:ring-2 focus:ring-green-900"
             >
               Crear cuenta
             </button>
           </form>
 
-          <p className="mt-2 text-center text-gray-600">
+          <p className="mt-2 text-center text-gray-600 text-lg">
             ¿Ya tienes cuenta? <a href="/Login" className="text-VerdeLink hover:underline">Iniciar sesión</a>
           </p>
         </div>
