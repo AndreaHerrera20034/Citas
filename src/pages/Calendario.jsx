@@ -4,7 +4,6 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import '../App.css';
-import { Input, Textarea } from '../components/index'
 
 Modal.setAppElement('#root');
 
@@ -86,15 +85,25 @@ const Calendario = () => {
                         </div> */}
                         <div className="mb-2 flex items-center justify-between">
                             <label className="block text-gray-700 w-1/3">Titulo</label>
-                            <Input type='text' value={newEventTitle} name="eventTitle" onChange={(e) => setNewEventTitle(e.target.value)} required />
+                            <input
+                                className="w-2/3 border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                type='text' value={newEventTitle} name="eventTitle" onChange={(e) => setNewEventTitle(e.target.value)} required
+                            />
                         </div>
                         <div className="mb-2 flex items-center justify-between">
                             <label className="block text-gray-700 w-1/3">Nombre del paciente</label>
-                            <Input type='text' name="patientName" />
+                            <input
+                                className="w-2/3 border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                type='text' name="patientName"
+                            />
                         </div>
                         <div className="mb-2 flex items-center justify-between">
                             <label className="block text-gray-700 w-1/3">Descripción</label>
-                            <Textarea rows={3} value={newEventDescription} name="description" onChange={(e) => setNewEventDescription(e.target.value)} required />
+                            <textarea
+                                className="w-2/3 h-1/2 border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="Escribe la descripción aquí..."
+                                rows={3} value={newEventDescription} name="description" onChange={(e) => setNewEventDescription(e.target.value)} required
+                            />
                         </div>
 
                         <div className='mb-2 flex items-center'>
