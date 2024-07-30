@@ -14,7 +14,7 @@ export default function Registro() {
           <h2 className="text-5xl text-center font-bold text-gray-800 ">
             Crea una cuenta
           </h2>
-          <p className="text-gray-600 text-2xl mb-3">
+          <p className="text-gray-600 text-2xl text-center mb-3">
             Por favor escriba sus datos para registrarse.
           </p>
           <form>
