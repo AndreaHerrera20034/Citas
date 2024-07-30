@@ -34,7 +34,7 @@ const Navbar = () => {
             className="h-7"
             alt="Flowbite Logo"
           />
-          <span className="self-center text-2xl font-bold whitespace-nowrap dark:text-white">
+          <span className="self-center text-2xl font-bold whitespace-nowrap dark:text-black">
           Nutritious Date
           </span>
         </a>
