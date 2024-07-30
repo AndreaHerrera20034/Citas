@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Navbar from '../components/Navbar/Navbar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 

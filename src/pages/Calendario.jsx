@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 import { Calendar, dayjsLocalizer } from 'react-big-calendar';
+import Modal from 'react-modal';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import dayjs from 'dayjs';
 import '../App.css'; // Asegúrate de que esta ruta es correcta
@@ -127,28 +128,27 @@ const Calendario = () => {
 
     return (
         <>
-            <div className='flex flex-col items-center justify-center min-h-screen'>
-                <div className='w-full max-w-4xl bg-white border-4 border-gray-100 rounded-lg shadow-lg p-6'>
-                    <Calendar
-                        localizer={localizer}
-                        events={events}
-                        style={{ height: 500 }}
-                        selectable
-                        onSelectSlot={handleSelectSlot}
-                        onSelectEvent={handleSelectedEvent}
-                    />
-                </div>
-                <Modal
-                    isOpen={modalState}
-                    onRequestClose={closeModal}
-                    className="fixed inset-0 flex items-center justify-center z-50"
-                    overlayClassName="absolute inset-0 bg-gray-500 bg-opacity-75"
-                    contentLabel="Event Modal"
-                >
-                    <ModalContent />
-                </Modal>
+        <div className='flex flex-col items-center justify-center min-h-screen'>
+
+            <div className='w-full max-w-4xl bg-white border-4 border-gray-100 rounded-lg shadow-lg p-6'>
+                <Calendar
+                    localizer={localizer}
+                    events={events}
+                    style={{ height: 500 }}
+                    selectable
+                    onSelectSlot={handleSelectSlot}
+                    onSelectEvent={handleSelectedEvent} />
             </div>
-        </>
+            <Modal
+                isOpen={modalState}
+                onRequestClose={closeModal}
+                className="modal-content"
+                overlayClassName="modal-overlay"
+                contentLabel="Event Modal"
+            >
+                <ModalContent />
+            </Modal>
+        </div></>
     );
 };
 

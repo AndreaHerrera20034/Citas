@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Navbar from '../components/Navbar/Navbar';
 import '../App.css';
 
 const citas = [
@@ -35,6 +36,7 @@ const Historial = () => {
     };
 
     return (
+        <> <Navbar />
         <div className="p-6">
             <div className="flex space-x-4 mb-4">
                 <button
@@ -68,7 +70,7 @@ const Historial = () => {
                 {activeTab === 'canceladas' && renderCitas('canceladas')}
                 {activeTab === 'atendidas' && renderCitas('atendidas')}
             </div>
-        </div>
+        </div></>
     );
 };
 
