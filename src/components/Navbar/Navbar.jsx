@@ -23,7 +23,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className="bg-white border-gray-200 dark:bg-gray-900 relative shadow-md">
+    <nav className="bg-white border-gray-200  relative shadow-md">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <a
           href="/"
@@ -31,7 +31,7 @@ const Navbar = () => {
         >
           <img
             src="src/assets/logoNav.png"
-            className="h-10"
+            className="h-7"
             alt="Flowbite Logo"
           />
           <span className="self-center text-2xl font-bold whitespace-nowrap dark:text-white">
@@ -111,7 +111,7 @@ const Navbar = () => {
             <li>
               <a
                 href="/"
-                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#65A571] md:p-0 dark:text-white  dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                className="font-bold block py-2 px-3 text-[#0a8537] rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#65A571] md:p-0 dark:text-white  dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                 aria-current="page"
               >
                 Inicio
@@ -120,7 +120,7 @@ const Navbar = () => {
             <li>
               <a
                 href="/Calendario"
-                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#65A571] md:p-0 dark:text-white  dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                className="font-bold block py-2 px-3 text-[#0a8537] rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#65A571] md:p-0 dark:text-white  dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
               >
                 Calendario
               </a>
@@ -128,7 +128,7 @@ const Navbar = () => {
             <li>
               <a
                 href="#"
-                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#65A571] md:p-0 dark:text-white  dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                className="font-bold block py-2 px-3 text-[#0a8537] rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#65A571] md:p-0 dark:text-white  dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
               >
                 Historial
               </a>
