@@ -1,5 +1,6 @@
 import { Calendar, dayjsLocalizer } from 'react-big-calendar';
 import Modal from 'react-modal';
+import Navbar from '../components/Navbar/Navbar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import dayjs from 'dayjs';
 import { useState } from 'react';
@@ -185,7 +186,7 @@ const Calendario = () => {
     );
 
     return (
-        <>
+        <> <Navbar />
         <div className='flex flex-col items-center justify-center min-h-screen'>
 
             <div className='w-full max-w-4xl bg-white border-4 border-gray-100 rounded-lg shadow-lg p-6'>

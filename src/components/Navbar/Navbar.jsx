@@ -44,7 +44,7 @@ const Navbar = () => {
             aria-expanded={isDropdownOpen}
             onClick={toggleDropdown}
             data-dropdown-toggle="language-dropdown-menu"
-            class="inline-flex items-center font-medium justify-center px-4 py-2 text-sm text-gray-900 dark:text-white rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
+            className="inline-flex items-center font-medium justify-center px-4 py-2 text-sm text-gray-900 dark:text-white rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
           >
             
             <FontAwesomeIcon icon={faCircleUser} className="w-7 h-7 pr-2" />
@@ -63,14 +63,14 @@ const Navbar = () => {
                 name@flowbite.com
               </span>
             </div>
-            <ul class="py-2 font-medium" role="none">
+            <ul className="py-2 font-medium" role="none">
               <li>
                 <a
                   href="#"
-                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
                   role="menuitem"
                 >
-                  <div class="inline-flex items-center">
+                  <div className="inline-flex items-center">
                   Cerrar sesión
                   </div>
                 </a>
@@ -127,7 +127,7 @@ const Navbar = () => {
             </li>
             <li>
               <a
-                href="#"
+                href="/Historial"
                 className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#65A571] md:p-0 dark:text-white  dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
               >
                 Historial
