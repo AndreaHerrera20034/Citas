@@ -18,16 +18,25 @@ const Calendario = () => {
             description: "Descripción de la cita 1"
         }
     ]);
-    const [selectedEvent, setSelectedEvent] = useState(null);
     const [modalState, setModalState] = useState(false);
-    const [newEventTitle, setNewEventTitle] = useState('');
-    const [newEventDescription, setNewEventDescription] = useState('');
-    const [selectedDate, setSelectedDate] = useState(null);
-    const [selectedDoctor, setSelectedDoctor] = useState('');
-    const [patientName, setPatientName] = useState('');
+    const [selectedEvent, setSelectedEvent] = useState(null);
+
+    // Estado del formulario
+    const [formData, setFormData] = useState({
+        title: '',
+        description: '',
+        startTime: '09:00',
+        endTime: '10:00',
+        date: null,
+        doctor: '',
+        patientName: ''
+    });
 
     const handleSelectSlot = (slotInfo) => {
-        setSelectedDate(slotInfo.start);
+        setFormData({
+            ...formData,
+            date: slotInfo.start
+        });
         setSelectedEvent(null);
         setModalState(true);
     };
@@ -40,19 +49,23 @@ const Calendario = () => {
     const closeModal = () => {
         setModalState(false);
         setSelectedEvent(null);
-        setNewEventTitle('');
-        setNewEventDescription('');
-        setSelectedDate(null);
-        setSelectedDoctor('');
-        setPatientName('');
+        setFormData({
+            title: '',
+            description: '',
+            startTime: '09:00',
+            endTime: '10:00',
+            date: null,
+            doctor: '',
+            patientName: ''
+        });
     };
 
     const handleAddEvent = () => {
         const newEvent = {
-            title: newEventTitle,
-            description: newEventDescription,
-            start: dayjs(selectedDate).toDate(),
-            end: dayjs(selectedDate).add(1, 'hour').toDate(),
+            title: formData.title,
+            description: formData.description,
+            start: dayjs(formData.date).set('hour', parseInt(formData.startTime.split(':')[0])).set('minute', parseInt(formData.startTime.split(':')[1])).toDate(),
+            end: dayjs(formData.date).set('hour', parseInt(formData.endTime.split(':')[0])).set('minute', parseInt(formData.endTime.split(':')[1])).toDate(),
         };
         setEvents([...events, newEvent]);
         closeModal();
@@ -64,6 +77,14 @@ const Calendario = () => {
         );
         setEvents(updatedEvents);
         closeModal();
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            [name]: value
+        }));
     };
 
     const ModalContent = useCallback(() => (
@@ -102,17 +123,19 @@ const Calendario = () => {
                             <input
                                 className="w-2/3 border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 type='text'
-                                value={newEventTitle}
-                                onChange={(e) => setNewEventTitle(e.target.value)}
+                                name="title"
+                                value={formData.title}
+                                onChange={handleChange}
                                 required
                             />
                         </div>
                         <div className="mb-2 flex items-center justify-between">
                             <label className="block text-gray-700 w-1/3">Médico</label>
                             <select
+                                name="doctor"
                                 className="w-2/3 px-4 py-2 bg-transparent border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                value={selectedDoctor}
-                                onChange={(e) => setSelectedDoctor(e.target.value)}
+                                value={formData.doctor}
+                                onChange={handleChange}
                                 required
                             >
                                 <option value="">Elige el médico</option>
@@ -126,8 +149,9 @@ const Calendario = () => {
                             <input
                                 className="w-2/3 border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 type='text'
-                                value={patientName}
-                                onChange={(e) => setPatientName(e.target.value)}
+                                name="patientName"
+                                value={formData.patientName}
+                                onChange={handleChange}
                                 required
                             />
                         </div>
@@ -137,10 +161,71 @@ const Calendario = () => {
                                 className="w-2/3 h-1/2 border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 placeholder="Escribe la descripción aquí..."
                                 rows={3}
-                                value={newEventDescription}
-                                onChange={(e) => setNewEventDescription(e.target.value)}
+                                name="description"
+                                value={formData.description}
+                                onChange={handleChange}
                                 required
                             />
+                        </div>
+                        <div className='mb-2 flex items-center'>
+                            <label className="block text-gray-700 w-1/3">Hora inicial</label>
+                            <div className="flex">
+                                <input
+                                    type="time"
+                                    name="startTime"
+                                    className="rounded-none rounded-s-xl bg-gray-50 w-auto border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    min="09:00"
+                                    max="18:00"
+                                    value={formData.startTime}
+                                    onChange={handleChange}
+                                    required
+                                />
+                                <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-s-0 border-s-0 border-gray-300 rounded-e-md dark:bg-gray-200 dark:text-gray-400 dark:border-gray-300">
+                                    <svg
+                                        className="w-4 h-4 text-gray-500 dark:text-gray-400"
+                                        aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            fillRule="evenodd"
+                                            d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z"
+                                            clipRule="evenodd"
+                                        />
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+                        <div className='mb-2 flex items-center'>
+                            <label className="block text-gray-700 w-1/3">Hora Final</label>
+                            <div className="flex">
+                                <input
+                                    type="time"
+                                    name="endTime"
+                                    className="rounded-none rounded-s-xl bg-gray-50 w-auto border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    min="09:00"
+                                    max="18:00"
+                                    value={formData.endTime}
+                                    onChange={handleChange}
+                                    required
+                                />
+                                <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-s-0 border-s-0 border-gray-300 rounded-e-md dark:bg-gray-200 dark:text-gray-400 dark:border-gray-300">
+                                    <svg
+                                        className="w-4 h-4 text-gray-500 dark:text-gray-400"
+                                        aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            fillRule="evenodd"
+                                            d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z"
+                                            clipRule="evenodd"
+                                        />
+                                    </svg>
+                                </span>
+                            </div>
                         </div>
                         <div className="flex justify-end">
                             <button
@@ -162,7 +247,7 @@ const Calendario = () => {
                 </>
             )}
         </div>
-    ), [selectedEvent, newEventTitle, newEventDescription, selectedDate, selectedDoctor, patientName]);
+    ), [selectedEvent, formData]);
 
     return (
         <>

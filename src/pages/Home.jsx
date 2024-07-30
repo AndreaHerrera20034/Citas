@@ -168,8 +168,7 @@ function Home() {
                                 Agregar Evento
                             </button>
                         </div>
-                    </form>
-                </div>
+                    </form>        </div>
             </Modal>
         </>
     );
