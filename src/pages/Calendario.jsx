@@ -185,7 +185,9 @@ const Calendario = () => {
     );
 
     return (
-        <div className='flex flex-col items-center justify-center min-h-screen p-4'>
+        <>
+        <div className='flex flex-col items-center justify-center min-h-screen'>
+
             <div className='w-full max-w-4xl bg-white border-4 border-gray-100 rounded-lg shadow-lg p-6'>
                 <Calendar
                     localizer={localizer}
@@ -193,8 +195,7 @@ const Calendario = () => {
                     style={{ height: 500 }}
                     selectable
                     onSelectSlot={handleSelectSlot}
-                    onSelectEvent={handleSelectedEvent}
-                />
+                    onSelectEvent={handleSelectedEvent} />
             </div>
             <Modal
                 isOpen={modalState}
@@ -205,7 +206,7 @@ const Calendario = () => {
             >
                 <ModalContent />
             </Modal>
-        </div>
+        </div></>
     );
 };
 
