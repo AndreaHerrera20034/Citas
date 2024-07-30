@@ -79,13 +79,22 @@ const Calendario = () => {
         closeModal();
     };
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prevFormData => ({
-            ...prevFormData,
-            [name]: value
-        }));
-    };
+    // const handleChange = (e) => {
+    //     const { name, value } = e.target;
+    //     setFormData(prevFormData => ({
+    //         ...prevFormData,
+    //         [name]: value
+    //     }));
+    // };
+
+    // const handleChange = (e) => {
+    //     const { name, value } = e.target;
+    //     console.log(`Campo: ${name}, Valor: ${value}`); // Agrega esta línea para depuración
+    //     setFormData(prevFormData => ({
+    //         ...prevFormData,
+    //         [name]: value
+    //     }));
+    // };
 
     const ModalContent = useCallback(() => (
         <div className="p-4 bg-white rounded-lg shadow-lg max-w-lg mx-auto">
@@ -124,8 +133,8 @@ const Calendario = () => {
                                 className="w-2/3 border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 type='text'
                                 name="title"
-                                value={formData.title}
-                                onChange={handleChange}
+
+                                
                                 required
                             />
                         </div>
@@ -134,8 +143,8 @@ const Calendario = () => {
                             <select
                                 name="doctor"
                                 className="w-2/3 px-4 py-2 bg-transparent border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                value={formData.doctor}
-                                onChange={handleChange}
+                                
+                                
                                 required
                             >
                                 <option value="">Elige el médico</option>
@@ -150,8 +159,7 @@ const Calendario = () => {
                                 className="w-2/3 border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 type='text'
                                 name="patientName"
-                                value={formData.patientName}
-                                onChange={handleChange}
+                                
                                 required
                             />
                         </div>
@@ -162,8 +170,8 @@ const Calendario = () => {
                                 placeholder="Escribe la descripción aquí..."
                                 rows={3}
                                 name="description"
-                                value={formData.description}
-                                onChange={handleChange}
+                                
+                               
                                 required
                             />
                         </div>
@@ -176,8 +184,7 @@ const Calendario = () => {
                                     className="rounded-none rounded-s-xl bg-gray-50 w-auto border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     min="09:00"
                                     max="18:00"
-                                    value={formData.startTime}
-                                    onChange={handleChange}
+                                    
                                     required
                                 />
                                 <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-s-0 border-s-0 border-gray-300 rounded-e-md dark:bg-gray-200 dark:text-gray-400 dark:border-gray-300">
@@ -206,8 +213,7 @@ const Calendario = () => {
                                     className="rounded-none rounded-s-xl bg-gray-50 w-auto border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     min="09:00"
                                     max="18:00"
-                                    value={formData.endTime}
-                                    onChange={handleChange}
+                                    
                                     required
                                 />
                                 <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-s-0 border-s-0 border-gray-300 rounded-e-md dark:bg-gray-200 dark:text-gray-400 dark:border-gray-300">
