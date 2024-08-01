@@ -1,12 +1,13 @@
 export default function Login() {
   return (
     <div className="flex items-center justify-center h-screen">
-      <div className="flex overflow-hidden w-full">
+      <div className="flex justify-center overflow-hidden w-full">
         <div className=" p-8">
           <div className="mb-1 text-center">
             <img src="src/assets/logo.png" alt="Logo" className="h-32 w-auto mx-auto" />
           </div>
-          <div>
+          {/* Formulario */}
+          <div className="">
             <h2 className="text-5xl text-center font-bold text-gray-800 mb-2">Inicia sesión</h2>
           <p className="text-gray-600 text-2xl mb-3 text-center">Por favor ingrese sus credenciales.</p>
           <form>
@@ -44,8 +45,8 @@ export default function Login() {
           </p>
           </div>
         </div>
-        <div className="w-8/12">
-          <img src="src/assets/image 25.png" alt="Nutrious Date" className="py-2 px-6 h-screen w-full rounded-3xl object-cover" />
+        <div className="flex justify-end pr-12">
+          <img src="src\assets\login.png" alt="Nutrious Date" className="py-2 px-6 h-auto w-auto rounded-3xl object-cover" />
         </div>
       </div>
     </div>

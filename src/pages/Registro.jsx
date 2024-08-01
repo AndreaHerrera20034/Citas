@@ -3,11 +3,12 @@
 export default function Registro() {
   return (
     <div className="flex items-center justify-center h-screen">
-      <div className="flex overflow-hidden">
-        <div className="w-8/12">
-          <img src="src\assets\nutriologo-transformed.jpeg" className="py-2 px-2 h-screen w-full rounded-3xl" alt="Nutrious DATE" />
+      <div className="flex w-full overflow-hidden">
+        <div className="flex w-2/4 pl-4">
+          <img src="src\assets\nutriologo-transformed.jpeg" className="py-2 mt-0 w-full h-svh rounded-3xl object-cover" alt="Nutrious DATE" />
         </div>
-        <div className="p-8">
+        {/* Formulario */}
+        <div className="pl-14 mt-14">
           <div className="mb-1">
             <img src="src\assets\logo.png" className="h-32 w-auto mx-auto" alt="Nutrious date" />
           </div>
