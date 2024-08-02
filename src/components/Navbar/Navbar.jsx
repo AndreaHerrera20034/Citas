@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
+import {jwtDecode} from "jwt-decode";
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [patient, setPatient] = useState({ name: '', email: '' });
 
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
@@ -17,13 +19,38 @@ const Navbar = () => {
     setIsDropdownOpen(false);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
+    // Obtener y decodificar el token del localStorage
+    const token = localStorage.getItem('Token');
+    if (token) {
+        try {
+            const decodedToken = jwtDecode(token);
+
+            // Accede a los datos específicos del token
+            const patientName = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
+            const patientEmail = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"];
+            // Aquí puedes añadir otros datos si es necesario
+
+            // Actualiza el estado con el nombre del paciente
+            setPatient({ name: patientName, email: patientEmail });  // Ajusta esto según la estructura de tu estado
+        } catch (error) {
+            console.error('Error decodificando el token:', error);
+        }
+    }
+  }, []);
+
+  useEffect(() => {
     document.addEventListener("mousedown", closeDropdown);
     return () => document.removeEventListener("mousedown", closeDropdown);
   }, []);
 
+  const handleLogout = () => {
+    localStorage.removeItem('Token'); // Elimina el token del localStorage
+    window.location.href = "/Login"; // Redirige a la página de inicio de sesión
+  };
+
   return (
-    <nav className="bg-white border-gray-200  relative shadow-md">
+    <nav className="bg-white border-gray-200 relative shadow-md">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <a
           href="/"
@@ -35,7 +62,7 @@ const Navbar = () => {
             alt="Flowbite Logo"
           />
           <span className="self-center text-2xl font-bold whitespace-nowrap dark:text-black">
-          Nutritious Date
+            Nutritious Date
           </span>
         </a>
         <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
@@ -46,9 +73,8 @@ const Navbar = () => {
             data-dropdown-toggle="language-dropdown-menu"
             className="inline-flex items-center font-medium justify-center px-4 py-2 text-sm text-gray-900 dark:text-white rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
           >
-            
             <FontAwesomeIcon icon={faCircleUser} className="w-7 h-7 pr-2" />
-            <span className="font-medium text-sm"> Alondra Cariillo</span>
+            <span className="font-medium text-sm">{patient.name}</span>
           </button>
           
           {/* Dropdown menu */}
@@ -59,23 +85,23 @@ const Navbar = () => {
             id="user-dropdown"
           >
             <div className="px-4 py-3">
+              <span className="block text-sm text-gray-600 truncate dark:text-gray-400 pb-3">
+                {patient.name}
+              </span>
               <span className="block text-sm text-gray-600 truncate dark:text-gray-400">
-                name@flowbite.com
+                {patient.email}
               </span>
             </div>
             <ul className="py-2 font-medium" role="none">
               <li>
-                <a
-                  href="/Historial"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
+                <button
+                  onClick={handleLogout}
+                  className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
                   role="menuitem"
                 >
-                  <div className="inline-flex items-center">
                   Cerrar sesión
-                  </div>
-                </a>
+                </button>
               </li>
-             
             </ul>
           </div>
           <button
@@ -111,7 +137,7 @@ const Navbar = () => {
             <li>
               <a
                 href="/"
-                className="font-bold block py-2 px-3 text-[#0a8537] rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#65A571] md:p-0 dark:text-white  dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                className="font-bold block py-2 px-3 text-[#0a8537] rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#65A571] md:p-0 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                 aria-current="page"
               >
                 Inicio
@@ -120,7 +146,7 @@ const Navbar = () => {
             <li>
               <a
                 href="/Calendario"
-                className="font-bold block py-2 px-3 text-[#0a8537] rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#65A571] md:p-0 dark:text-white  dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                className="font-bold block py-2 px-3 text-[#0a8537] rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#65A571] md:p-0 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
               >
                 Calendario
               </a>
@@ -128,7 +154,7 @@ const Navbar = () => {
             <li>
               <a
                 href="/Historial"
-                className="font-bold block py-2 px-3 text-[#0a8537] rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#65A571] md:p-0 dark:text-white  dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                className="font-bold block py-2 px-3 text-[#0a8537] rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#65A571] md:p-0 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
               >
                 Historial
               </a>
