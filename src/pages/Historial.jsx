@@ -15,7 +15,7 @@ const Historial = () => {
 
     const renderCitas = (categoria) => {
         return citas.filter(cita => cita.categoria === categoria).map(cita => (
-            <div key={cita.id} className="bg-gray-100 p-4 rounded-lg mb-4 shadow-md">
+            <div key={cita.id} className="bg-white p-4 rounded-lg mb-4 shadow-md">
                 <div className="flex justify-between items-center mb-2">
                     <div className="flex items-center">
                         <div className="h-10 w-10 bg-green-500 rounded-full flex items-center justify-center text-black font-bold">
