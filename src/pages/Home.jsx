@@ -117,15 +117,7 @@ function Home() {
                     <h2 className="text-xl font-semibold mb-4">Agregar Cita</h2>
                     <form>
                         <div className="mb-2 flex items-center justify-between">
-                            <label className="block text-gray-700 w-1/3">Título</label>
-                            <input
-                                className="w-2/3 border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                type='text'
-                                required
-                            />
-                        </div>
-                        <div className="mb-2 flex items-center justify-between">
-                            <label className="block text-gray-700 w-1/3">Médico</label>
+                            <label className="block text-gray-700 w-1/3">Nutriólog</label>
                             <select
                                 className="w-2/3 px-4 py-2 bg-transparent border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 required
@@ -141,15 +133,6 @@ function Home() {
                             <input
                                 className="w-2/3 border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 type='text'
-                                required
-                            />
-                        </div>
-                        <div className="mb-2 flex items-center justify-between">
-                            <label className="block text-gray-700 w-1/3">Descripción</label>
-                            <textarea
-                                className="w-2/3 h-1/2 border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                placeholder="Escribe la descripción aquí..."
-                                rows={3}
                                 required
                             />
                         </div>
