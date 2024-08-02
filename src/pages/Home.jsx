@@ -1,15 +1,100 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
-import Navbar from '../components/Navbar/Navbar';                                        
-import '../App.css'; // Asegúrate de tener estilos para el modal aquí
+import Navbar from '../components/Navbar/Navbar';   
+import CitasProximas from '../components/CitasProximas/CitasProximas'                                      
+import '../App.css';
+import axios from 'axios';  // Importa Axios
+import { jwtDecode } from "jwt-decode";
 
 Modal.setAppElement('#root');
 
 function Home() {
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [doctors, setDoctors] = useState([]);
+    const [consultories, setConsultories] = useState([]);
+    const [selectedDoctor, setSelectedDoctor] = useState('');
+    const [selectedConsultory, setSelectedConsultory] = useState('');
+    const [appointmentDate, setAppointmentDate] = useState('');
+    const [appointmentTime, setAppointmentTime] = useState('');
+    const [patient, setPatient] = useState({ name: '', email: '' });
+
+
+    useEffect(() => {
+        // Obtener y decodificar el token del localStorage
+        const token = localStorage.getItem('Token');
+        if (token) {
+            try {
+                const decodedToken = jwtDecode(token);
+    
+                // Accede a los datos específicos del token
+                const patientName = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
+                const patientEmail = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"];
+                // Aquí puedes añadir otros datos si es necesario
+    
+                // Actualiza el estado con el nombre del paciente
+                setPatient({ name: patientName, email: patientEmail });  // Ajusta esto según la estructura de tu estado
+            } catch (error) {
+                console.error('Error decodificando el token:', error);
+            }
+        }
+    
+        fetchDoctors();
+        fetchConsultories();
+    }, []);
+    
+
+    const fetchDoctors = async () => {
+        try {
+            const response = await axios.get('http://localhost:5156/api/UserAccount');
+            const data = response.data;
+            console.log('Fetched Doctors Data:', data);
+
+            if (data && Array.isArray(data.Data)) {
+                const filteredDoctors = data.Data.filter(doctor => doctor.AccountType === 1);
+                console.log('Filtered Doctors:', filteredDoctors);
+                setDoctors(filteredDoctors);
+            } else {
+                console.error('Doctors data is not an array:', data);
+            }
+        } catch (error) {
+            console.error('Error fetching doctors:', error);
+        }
+    };
+
+    const fetchConsultories = async () => {
+        try {
+            const response = await axios.get('http://localhost:5156/api/Consultory');
+            const data = response.data;
+            console.log('Fetched Consultories Data:', data);
+
+            if (data && Array.isArray(data.Data)) {
+                setConsultories(data.Data);
+            } else {
+                console.error('Consultories data is not an array:', data);
+            }
+        } catch (error) {
+            console.error('Error fetching consultories:', error);
+        }
+    };
 
     const openModal = () => setModalIsOpen(true);
     const closeModal = () => setModalIsOpen(false);
+
+    const handleDateChange = (e) => {
+        setAppointmentDate(e.target.value);
+    };
+
+    const handleTimeChange = (e) => {
+        setAppointmentTime(e.target.value);
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const appointmentDateTime = new Date(`${appointmentDate}T${appointmentTime}:00Z`).toISOString();
+        console.log('Appointment DateTime:', appointmentDateTime);
+
+        // Aquí puedes hacer la llamada a la API para agregar la cita, usando `appointmentDateTime`
+    };
 
     return (
         <>
@@ -17,7 +102,7 @@ function Home() {
             <div className="w-full min-h-screen flex flex-col pt-4">
                 <div className="flex-1 bg-gradient-to-r from-green-500 to-[#ffffff] p-6 rounded-lg shadow-md text-white">
                     <div className="max-w-2xl">
-                        <h2 className="text-4xl font-extrabold mb-2 font-sans pb-3">¡Bienvenido nuevamente!</h2>
+                        <h2 className="text-4xl font-extrabold mb-2 font-sans pb-3">¡Bienvenido nuevamente, {patient.name}!</h2>
                         <p className="text-xl font-semibold">¿Qué te gustaría hacer el día de hoy?</p>
                     </div>
                     <div className="mt-4 flex justify-end">
@@ -29,66 +114,7 @@ function Home() {
                         </button>
                     </div>
                 </div>
-                <div className="px-4 md:px-6 lg:px-8 py-8 flex-1">
-                    <h2 className="text-2xl font-bold mb-4">Próximas citas</h2>
-                    <div className="bg-white rounded-lg shadow-md p-4">
-                        <table className="w-full">
-                            <thead>
-                                <tr>
-                                    <th className="text-left p-2">Nutriólogo</th>
-                                    <th className="text-left p-2">Fecha/Hora</th>
-                                    <th className="text-left p-2">Consultorio</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr className="border-t">
-                                    <td className="p-2">
-                                        <div className="flex items-center gap-2">
-                                            <div>
-                                                <div className="font-medium">John Doe</div>
-                                                <div className="text-sm text-gray-500">Nutrition Consultation</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td className="p-2">
-                                        <div className="font-medium">June 15, 2023</div>
-                                        <div className="text-sm text-gray-500">10:00 AM</div>
-                                    </td>
-                                    <td className="p-2">
-                                        <div>
-                                            <span className="inline-block align-middle">Discuss diet plan</span>
-                                        </div>
-                                        <div>
-                                            <span className="inline-block align-middle">60 minutes</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr className="border-t">
-                                    <td className="p-2">
-                                        <div className="flex items-center gap-2">
-                                            <div>
-                                                <div className="font-medium">Jane Appleseed</div>
-                                                <div className="text-sm text-gray-500">Weight Management</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td className="p-2">
-                                        <div className="font-medium">June 22, 2023</div>
-                                        <div className="text-sm text-gray-500">2:00 PM</div>
-                                    </td>
-                                    <td className="p-2">
-                                        <div>
-                                            <span className="inline-block align-middle">Review progress</span>
-                                        </div>
-                                        <div>
-                                            <span className="inline-block align-middle">45 minutes</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                <CitasProximas></CitasProximas>
             </div>
 
             <Modal
@@ -115,84 +141,75 @@ function Home() {
                         </svg>
                     </button>
                     <h2 className="text-xl font-semibold mb-4">Agregar Cita</h2>
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         <div className="mb-2 flex items-center justify-between">
-                            <label className="block text-gray-700 w-1/3">Nutriólog</label>
+                            <label className="block text-gray-700 w-1/3">Nutriólogo</label>
                             <select
                                 className="w-2/3 px-4 py-2 bg-transparent border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                value={selectedDoctor}
+                                onChange={(e) => setSelectedDoctor(e.target.value)}
                                 required
                             >
                                 <option value="">Elige el médico</option>
-                                <option value="Gaspar Gonzalez Mooh">Gaspar Gonzalez Mooh</option>
-                                <option value="Ana Polanco Rodriguez">Ana Polanco Rodriguez</option>
-                                <option value="William Flores Chuc">William Flores Chuc</option>
+                                {doctors.length > 0 ? (
+                                    doctors.map((doctor) => (
+                                        <option key={doctor.Id} value={doctor.Id}>
+                                            {doctor.UserName}
+                                        </option>
+                                    ))
+                                ) : (
+                                    <option value="">No hay doctores disponibles</option>
+                                )}
                             </select>
                         </div>
                         <div className="mb-2 flex items-center justify-between">
-                            <label className="block text-gray-700 w-1/3">Nombre del paciente</label>
+                            <label className="block text-gray-700 w-1/3">Paciente</label>
+                            <input
+                                className="w-2/3 border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 "
+                                type='text'
+                                value={patient.name}
+                                readOnly
+                            />
+                        </div>
+                        <div className="mb-2 flex items-center justify-between">
+                            <label className="block text-gray-700 w-1/3">Consultorio</label>
+                            <select
+                                className="w-2/3 px-4 py-2 bg-transparent border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                value={selectedConsultory}
+                                onChange={(e) => setSelectedConsultory(e.target.value)}
+                                required
+                            >
+                                <option value="">Elige el consultorio</option>
+                                {consultories.length > 0 ? (
+                                    consultories.map((consultory) => (
+                                        <option key={consultory.Id} value={consultory.Id}>
+                                            {consultory.Name}
+                                        </option>
+                                    ))
+                                ) : (
+                                    <option value="">No hay consultorios disponibles</option>
+                                )}
+                            </select>
+                        </div>
+                        <div className="mb-2 flex items-center justify-between">
+                            <label className="block text-gray-700 w-1/3">Fecha</label>
                             <input
                                 className="w-2/3 border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                type='text'
+                                type='date'
+                                value={appointmentDate}
+                                onChange={handleDateChange}
                                 required
                             />
                         </div>
-                        <div className='mb-2 flex items-center'>
-                            <label className="block text-gray-700 w-1/3">Hora Inicial</label>
-                            <div className="flex">
-                                <input
-                                    type="time"
-                                    name="endTime"
-                                    className="rounded-none rounded-s-xl bg-gray-50 w-auto border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    min="09:00"
-                                    max="18:00"
-
-                                    required
-                                />
-                                {/* <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-s-0 border-s-0 border-gray-300 rounded-e-md dark:bg-gray-200 dark:text-gray-400 dark:border-gray-300">
-                                    <svg
-                                        className="w-4 h-4 text-gray-500 dark:text-gray-400"
-                                        aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            fillRule="evenodd"
-                                            d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z"
-                                            clipRule="evenodd"
-                                        />
-                                    </svg>
-                                </span> */}
-                            </div>
-                        </div>
-                        <div className='mb-2 flex items-center'>
-                            <label className="block text-gray-700 w-1/3">Hora Final</label>
-                            <div className="flex">
-                                <input
-                                    type="time"
-                                    name="endTime"
-                                    className="rounded-none rounded-s-xl bg-gray-50 w-auto border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    min="09:00"
-                                    max="18:00"
-
-                                    required
-                                />
-                                {/* <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-s-0 border-s-0 border-gray-300 rounded-e-md dark:bg-gray-200 dark:text-gray-400 dark:border-gray-300">
-                                    <svg
-                                        className="w-4 h-4 text-gray-500 dark:text-gray-400"
-                                        aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            fillRule="evenodd"
-                                            d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z"
-                                            clipRule="evenodd"
-                                        />
-                                    </svg>
-                                </span> */}
-                            </div>
+                        <div className="mb-2 flex items-center justify-between">
+                            <label className="block text-gray-700 w-1/3">Hora</label>
+                            <input
+                                className="w-2/3 border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                type='time'
+                                value={appointmentTime}
+                                onChange={handleTimeChange}
+                                required
+                            />
                         </div>
                         <div className="flex justify-end">
                             <button
@@ -203,13 +220,14 @@ function Home() {
                                 Cancelar
                             </button>
                             <button
-                                type="button"
+                                type="submit"
                                 className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                             >
                                 Agregar Evento
                             </button>
                         </div>
-                    </form>        </div>
+                    </form>
+                </div>
             </Modal>
         </>
     );
