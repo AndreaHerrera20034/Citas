@@ -39,6 +39,8 @@ export default function Login() {
       // Aquí asumimos que la respuesta es exitosa si el estado de la respuesta es 200
       if (response.status === 200) {
         // Redirige al home si el inicio de sesión es exitoso
+        const { token } = response.data;
+      localStorage.setItem('Token', token);
         navigate('/');
       }
     } catch (error) {
