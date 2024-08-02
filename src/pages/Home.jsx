@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Modal from 'react-modal';
-import Navbar from '../components/Navbar/Navbar';
+import Navbar from '../components/Navbar/Navbar';                                        
 import '../App.css'; // Asegúrate de tener estilos para el modal aquí
 
 Modal.setAppElement('#root');
@@ -35,9 +35,9 @@ function Home() {
                         <table className="w-full">
                             <thead>
                                 <tr>
-                                    <th className="text-left p-2">Paciente</th>
+                                    <th className="text-left p-2">Nutriólogo</th>
                                     <th className="text-left p-2">Fecha/Hora</th>
-                                    <th className="text-left p-2">Detalles</th>
+                                    <th className="text-left p-2">Consultorio</th>
                                 </tr>
                             </thead>
                             <tbody>

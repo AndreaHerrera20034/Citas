@@ -116,8 +116,9 @@ const Calendario = () => {
             {selectedEvent ? (
                 <>
                     <h2 className="text-xl font-semibold mb-4">Detalles de la cita</h2>
-                    <p className="mb-4">Título: {selectedEvent.title}</p>
-                    <p className="mb-4">Descripción: {selectedEvent.description}</p>
+                    <p className="mb-4">Paciente: {selectedEvent.title}</p>
+                    <p className="mb-4">Nutriólogo: {selectedEvent.description}</p>
+                    <p className="mb-4">Consultorio: {selectedEvent.description}</p>
                     <p className="mb-4">Fecha: {dayjs(selectedEvent.start).format('YYYY-MM-DD HH:mm')}</p>
                     <button onClick={handleCancelEvent} className="w-full bg-red-500 text-white py-2 rounded mt-4 hover:bg-red-600">
                         Cancelar Cita
