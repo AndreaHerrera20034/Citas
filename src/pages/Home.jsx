@@ -19,17 +19,13 @@ function Home() {
         const fetchUpcomingAppointments = async () => {
             try {
                 const response = await axios.get('http://localhost:5156/api/Appointment');
-                console.log('API Response:', response.data); // Verifica la respuesta completa de la API
                 
-                // Verifica si response.data.Data es un array
                 if (Array.isArray(response.data.Data)) {
-                    // Ordenar las citas por fecha en orden ascendente
-                    const sortedAppointments = response.data.Data.sort((a, b) => new Date(a.AppoinmentDate) - new Date(b.AppoinmentDate));
-
-                    // Seleccionar solo las 3 más próximas
+                    const activeAppointments = response.data.Data.filter(cita => cita.StatusName.toLowerCase() === 'agendada');
+                    const sortedAppointments = activeAppointments.sort((a, b) => new Date(a.AppoinmentDate) - new Date(b.AppoinmentDate));
                     const topThreeAppointments = sortedAppointments.slice(0, 3);
 
-                    setUpcomingAppointments(topThreeAppointments); // Ajustar el estado con las citas filtradas
+                    setUpcomingAppointments(topThreeAppointments);
                 } else {
                     console.error('La respuesta de la API no contiene un array en response.data.Data');
                 }
@@ -72,7 +68,7 @@ function Home() {
                                 </tr>
                             </thead>
                             <tbody>
-                            {upcomingAppointments.length === 0 && (
+                                {upcomingAppointments.length === 0 && (
                                     <tr>
                                         <td colSpan="3" className="text-center p-2">No hay citas próximas.</td>
                                     </tr>
@@ -87,8 +83,8 @@ function Home() {
                                             </div>
                                         </td>
                                         <td className="p-2">
-                                            <div className="font-medium">{new Date(appointment.AppoinmentDate).toLocaleDateString()}</div>
-                                            <div className="text-sm text-gray-500">{new Date(appointment.AppoinmentDate).toLocaleTimeString()}</div>
+                                            <div className="font-medium">{new Date(appointment.AppoinmentDate).toLocaleDateString('es-ES')}</div>
+                                            <div className="text-sm text-gray-500">{new Date(appointment.AppoinmentDate).toLocaleTimeString('es-ES')}</div>
                                         </td>
                                         <td className="p-2">
                                             <div>
@@ -153,11 +149,10 @@ function Home() {
                             <div className="flex">
                                 <input
                                     type="time"
-                                    name="endTime"
+                                    name="startTime"
                                     className="rounded-none rounded-s-xl bg-gray-50 w-auto border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     min="09:00"
                                     max="18:00"
-
                                     required
                                 />
                             </div>
@@ -171,7 +166,6 @@ function Home() {
                                     className="rounded-none rounded-s-xl bg-gray-50 w-auto border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     min="09:00"
                                     max="18:00"
-
                                     required
                                 />
                             </div>
@@ -191,7 +185,8 @@ function Home() {
                                 Agregar Evento
                             </button>
                         </div>
-                    </form>        </div>
+                    </form>
+                </div>
             </Modal>
         </>
     );
