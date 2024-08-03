@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import Navbar from '../components/Navbar/Navbar';   
-import CitasProximas from '../components/CitasProximas/CitasProximas'                                      
+import CitasProximas from '../components/CitasProximas/CitasProximas';                                      
 import '../App.css';
 import axios from 'axios';  // Importa Axios
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode } from 'jwt-decode';
 
 Modal.setAppElement('#root');
 
@@ -16,8 +16,7 @@ function Home() {
     const [selectedConsultory, setSelectedConsultory] = useState('');
     const [appointmentDate, setAppointmentDate] = useState('');
     const [appointmentTime, setAppointmentTime] = useState('');
-    const [patient, setPatient] = useState({ name: '', email: '' });
-
+    const [patient, setPatient] = useState({ id: '', name: '', email: '' });
 
     useEffect(() => {
         // Obtener y decodificar el token del localStorage
@@ -27,22 +26,27 @@ function Home() {
                 const decodedToken = jwtDecode(token);
     
                 // Accede a los datos específicos del token
+                const patientId = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid"];
                 const patientName = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
                 const patientEmail = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"];
-                // Aquí puedes añadir otros datos si es necesario
     
-                // Actualiza el estado con el nombre del paciente
-                setPatient({ name: patientName, email: patientEmail });  // Ajusta esto según la estructura de tu estado
+                // Actualiza el estado con el ID y nombre del paciente
+                setPatient({ id: patientId, name: patientName, email: patientEmail });
             } catch (error) {
                 console.error('Error decodificando el token:', error);
             }
         }
     
+        // Recuperar valores del localStorage
+        const storedDoctor = localStorage.getItem('selectedDoctor');
+        const storedConsultory = localStorage.getItem('selectedConsultory');
+        if (storedDoctor) setSelectedDoctor(storedDoctor);
+        if (storedConsultory) setSelectedConsultory(storedConsultory);
+
         fetchDoctors();
         fetchConsultories();
     }, []);
     
-
     const fetchDoctors = async () => {
         try {
             const response = await axios.get('http://localhost:5156/api/UserAccount');
@@ -88,12 +92,51 @@ function Home() {
         setAppointmentTime(e.target.value);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const appointmentDateTime = new Date(`${appointmentDate}T${appointmentTime}:00Z`).toISOString();
+
+        // Obtener valores del localStorage para el envío
+        const storedDoctor = localStorage.getItem('selectedDoctor');
+        const storedConsultory = localStorage.getItem('selectedConsultory');
+
+        // Combinar la fecha y la hora en una sola cadena
+        const appointmentDateTime = new Date(`${appointmentDate}T${appointmentTime}`).toISOString();
         console.log('Appointment DateTime:', appointmentDateTime);
 
-        // Aquí puedes hacer la llamada a la API para agregar la cita, usando `appointmentDateTime`
+        const newAppointment = {
+            DoctorId: parseInt(storedDoctor, 10),  // Usar el valor almacenado en localStorage
+            PatientId: parseInt(patient.id,10),  // Asegúrate de que PatientId es el ID correcto
+            ConsultoryId: parseInt(storedConsultory,10), // Usar el valor almacenado en localStorage
+            AppointmentDate: appointmentDateTime
+        };
+
+        const token = localStorage.getItem('Token');
+        console.log('New Appointment Data:', newAppointment);  // Verifica los datos antes de enviar la solicitud
+
+        try {
+            const response = await axios.post(
+                'http://localhost:5156/api/Appointment',
+                newAppointment,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+            console.log('Appointment created:', response.data);
+            closeModal();
+            // Limpia los valores del localStorage
+            localStorage.removeItem('selectedDoctor');
+            localStorage.removeItem('selectedConsultory');
+        } catch (error) {
+            console.error('Error creating appointment:', error);
+            if (error.response) {
+                console.error('Error Response Data:', error.response.data);
+                if (error.response.data && error.response.data.errors) {
+                    console.error('Validation Errors:', error.response.data.errors);
+                }
+            }
+        }
     };
 
     return (
@@ -114,7 +157,7 @@ function Home() {
                         </button>
                     </div>
                 </div>
-                <CitasProximas></CitasProximas>
+                <CitasProximas />
             </div>
 
             <Modal
@@ -147,7 +190,11 @@ function Home() {
                             <select
                                 className="w-2/3 px-4 py-2 bg-transparent border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 value={selectedDoctor}
-                                onChange={(e) => setSelectedDoctor(e.target.value)}
+                                onChange={(e) => {
+                                    const doctorId = e.target.value;
+                                    setSelectedDoctor(doctorId);
+                                    localStorage.setItem('selectedDoctor', doctorId);
+                                }}
                                 required
                             >
                                 <option value="">Elige el médico</option>
@@ -165,7 +212,7 @@ function Home() {
                         <div className="mb-2 flex items-center justify-between">
                             <label className="block text-gray-700 w-1/3">Paciente</label>
                             <input
-                                className="w-2/3 border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 "
+                                className="w-2/3 border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 type='text'
                                 value={patient.name}
                                 readOnly
@@ -176,7 +223,11 @@ function Home() {
                             <select
                                 className="w-2/3 px-4 py-2 bg-transparent border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 value={selectedConsultory}
-                                onChange={(e) => setSelectedConsultory(e.target.value)}
+                                onChange={(e) => {
+                                    const consultoryId = e.target.value;
+                                    setSelectedConsultory(consultoryId);
+                                    localStorage.setItem('selectedConsultory', consultoryId);
+                                }}
                                 required
                             >
                                 <option value="">Elige el consultorio</option>
@@ -195,7 +246,7 @@ function Home() {
                             <label className="block text-gray-700 w-1/3">Fecha</label>
                             <input
                                 className="w-2/3 border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                type='date'
+                                type="date"
                                 value={appointmentDate}
                                 onChange={handleDateChange}
                                 required
@@ -205,27 +256,18 @@ function Home() {
                             <label className="block text-gray-700 w-1/3">Hora</label>
                             <input
                                 className="w-2/3 border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                type='time'
+                                type="time"
                                 value={appointmentTime}
                                 onChange={handleTimeChange}
                                 required
                             />
                         </div>
-                        <div className="flex justify-end">
-                            <button
-                                type="button"
-                                onClick={closeModal}
-                                className="mr-2 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                            >
-                                Cancelar
-                            </button>
-                            <button
-                                type="submit"
-                                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                            >
-                                Agregar Evento
-                            </button>
-                        </div>
+                        <button
+                            type="submit"
+                            className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                            Agendar Cita
+                        </button>
                     </form>
                 </div>
             </Modal>
