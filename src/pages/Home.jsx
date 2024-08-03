@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Modal from 'react-modal';
 import Navbar from '../components/Navbar/Navbar';   
 import CitasProximas from '../components/CitasProximas/CitasProximas';                                      
@@ -19,9 +19,7 @@ function Home() {
     const [patient, setPatient] = useState({ id: '', name: '', email: '' });
 
     useEffect(() => {
-        // Obtener y decodificar el token del localStorage
-        const token = localStorage.getItem('Token');
-        if (token) {
+        const fetchUpcomingAppointments = async () => {
             try {
                 const decodedToken = jwtDecode(token);
     
@@ -33,7 +31,7 @@ function Home() {
                 // Actualiza el estado con el ID y nombre del paciente
                 setPatient({ id: patientId, name: patientName, email: patientEmail });
             } catch (error) {
-                console.error('Error decodificando el token:', error);
+                console.error('Error fetching upcoming appointments:', error);
             }
         }
     
@@ -145,7 +143,7 @@ function Home() {
             <div className="w-full min-h-screen flex flex-col pt-4">
                 <div className="flex-1 bg-gradient-to-r from-green-500 to-[#ffffff] p-6 rounded-lg shadow-md text-white">
                     <div className="max-w-2xl">
-                        <h2 className="text-4xl font-extrabold mb-2 font-sans pb-3">¡Bienvenido nuevamente, {patient.name}!</h2>
+                        <h2 className="text-4xl font-extrabold mb-2 font-sans pb-3">¡Bienvenido nuevamente!</h2>
                         <p className="text-xl font-semibold">¿Qué te gustaría hacer el día de hoy?</p>
                     </div>
                     <div className="mt-4 flex justify-end">
@@ -184,9 +182,9 @@ function Home() {
                         </svg>
                     </button>
                     <h2 className="text-xl font-semibold mb-4">Agregar Cita</h2>
-                    <form onSubmit={handleSubmit}>
+                    <form>
                         <div className="mb-2 flex items-center justify-between">
-                            <label className="block text-gray-700 w-1/3">Nutriólogo</label>
+                            <label className="block text-gray-700 w-1/3">Nutriólog</label>
                             <select
                                 className="w-2/3 px-4 py-2 bg-transparent border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 value={selectedDoctor}
@@ -198,15 +196,9 @@ function Home() {
                                 required
                             >
                                 <option value="">Elige el médico</option>
-                                {doctors.length > 0 ? (
-                                    doctors.map((doctor) => (
-                                        <option key={doctor.Id} value={doctor.Id}>
-                                            {doctor.UserName}
-                                        </option>
-                                    ))
-                                ) : (
-                                    <option value="">No hay doctores disponibles</option>
-                                )}
+                                <option value="Gaspar Gonzalez Mooh">Gaspar Gonzalez Mooh</option>
+                                <option value="Ana Polanco Rodriguez">Ana Polanco Rodriguez</option>
+                                <option value="William Flores Chuc">William Flores Chuc</option>
                             </select>
                         </div>
                         <div className="mb-2 flex items-center justify-between">
